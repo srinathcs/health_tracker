@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">HealthTracker</string>
+    <string name="btn_title">Water Reminder</string>
+</resources>
