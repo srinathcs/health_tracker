@@ -70,8 +70,4 @@ public class SampleWorker extends Worker {
 
         notificationManager.notify(id, notification.build());
     }
-
-    private void onRemindByDayTime() {
-
-    }
 }
