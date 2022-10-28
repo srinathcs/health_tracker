@@ -8,7 +8,7 @@
         android:layout_width="250dp"
         android:textColor="@color/white"
         android:layout_height="wrap_content"
-        android:text="Water Reminder"
+        android:text="@string/waterReminder"
         android:id="@+id/btWaterReminder"
         android:background="@drawable/button_reminder"
         />

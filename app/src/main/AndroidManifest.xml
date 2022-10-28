@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.healthtracker.app">
+    <uses-permission android:name="android.permission."/>
 
     <application
         android:allowBackup="true"
@@ -14,7 +15,7 @@
         android:theme="@style/Theme.HealthTracker"
         tools:targetApi="31">
         <activity
-            android:name="com.healthtracker.testing.Testing"
+            android:name="com.healthtracker.home.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

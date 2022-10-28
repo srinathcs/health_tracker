@@ -1,4 +1,4 @@
-package com.healthtracker.testing;
+package com.healthtracker.home.work;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static android.os.Build.VERSION.SDK_INT;
@@ -17,10 +17,11 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.healthtracker.app.R;
+import com.healthtracker.home.HomeActivity;
 
 import java.util.Calendar;
 
-public class SampleWorker extends Worker {
+public class WaterReminder extends Worker {
 
     private static final String NOTIFICATION_ID = "appName_notification_id";
     private static final String NOTIFICATION_NAME = "appName";
@@ -28,7 +29,7 @@ public class SampleWorker extends Worker {
 
     private Context mContext;
 
-    public SampleWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public WaterReminder(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.mContext = context;
     }
@@ -45,7 +46,7 @@ public class SampleWorker extends Worker {
     }
 
     private void sendNotification(int id) {
-        Intent intent = new Intent(getApplicationContext(), Testing.class);
+        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra(NOTIFICATION_ID, id);
 
@@ -55,8 +56,8 @@ public class SampleWorker extends Worker {
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentTitle("Title")
-                .setContentText("Time to Drink")
+                .setContentTitle("Reminder")
+                .setContentText("Time to Drink Water")
                 .setDefaults(DEFAULT_ALL).setContentIntent(pendingIntent).setAutoCancel(true);
 
         notification.setPriority(NotificationCompat.PRIORITY_MAX);
