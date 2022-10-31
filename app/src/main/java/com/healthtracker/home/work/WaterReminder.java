@@ -23,7 +23,7 @@ import java.util.Calendar;
 
 public class WaterReminder extends Worker {
 
-    private static final String NOTIFICATION_ID = "appName_notification_id";
+    public static final String NOTIFICATION_ID = "appName_notification_id";
     private static final String NOTIFICATION_NAME = "appName";
     private static final String NOTIFICATION_CHANNEL = "appName_channel_01";
 
@@ -39,7 +39,7 @@ public class WaterReminder extends Worker {
     public Result doWork() {
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
-        if (timeOfDay >= 7 && timeOfDay < 19) {
+        if (timeOfDay >= 7 && timeOfDay < 22) {
             sendNotification(0);
         }
         return Result.success();
@@ -47,20 +47,23 @@ public class WaterReminder extends Worker {
 
     private void sendNotification(int id) {
         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(NOTIFICATION_ID, id);
 
         NotificationManager notificationManager =
                 (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE );
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle("Reminder")
                 .setContentText("Time to Drink Water")
-                .setDefaults(DEFAULT_ALL).setContentIntent(pendingIntent).setAutoCancel(true);
-
-        notification.setPriority(NotificationCompat.PRIORITY_MAX);
+                .addAction(R.drawable.ic_launcher_background, "+1 glass", pendingIntent)
+                .setDefaults(DEFAULT_ALL).setContentIntent(pendingIntent).setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
 
         if (SDK_INT >= O) {
             notification.setChannelId(NOTIFICATION_CHANNEL);

@@ -1,6 +1,10 @@
 package com.healthtracker.home;
 
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -11,8 +15,10 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import com.healthtracker.app.R;
+import com.healthtracker.data.dataBase.HealthTrackerDataBase;
 import com.healthtracker.data.pref.PrefConstant;
 import com.healthtracker.data.pref.PrefUtil;
+import com.healthtracker.home.entity.WaterCountEntity;
 import com.healthtracker.home.work.WaterReminder;
 import com.healthtracker.utils.AutoStartHelper;
 
@@ -21,11 +27,29 @@ import java.util.concurrent.TimeUnit;
 public class HomeActivity extends AppCompatActivity {
     private static final int REMINDER_INTERVAL = 60;
     private AppCompatButton btReminder;
+    private HealthTrackerDataBase dataBase;
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.e("TAG", "onNewIntent: "+intent.getIntExtra(WaterReminder.NOTIFICATION_ID,-1) );
+        NotificationManager notificationManager = (NotificationManager)
+                getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.cancel(intent.getIntExtra(WaterReminder.NOTIFICATION_ID,-1));
+
+        WaterCountEntity mWaterCountEntity = new WaterCountEntity();
+        mWaterCountEntity.setCount(1);
+        mWaterCountEntity.setDateTime(System.currentTimeMillis());
+
+        dataBase.waterCountDao().insert(mWaterCountEntity);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_health_tracker);
+        dataBase = HealthTrackerDataBase.getInstance(this);
         initView();
         initWidget();
         checkAutoStartPermission();
