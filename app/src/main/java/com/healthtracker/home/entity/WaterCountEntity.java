@@ -31,5 +31,4 @@ public class WaterCountEntity implements Serializable {
     @PrimaryKey
     @ColumnInfo(name = "date_time")
     private long dateTime;
-
 }
